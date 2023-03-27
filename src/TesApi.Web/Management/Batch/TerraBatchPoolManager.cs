@@ -118,8 +118,8 @@ namespace TesApi.Web.Management.Batch
         /// <summary>
         /// Deletes batch pool 
         /// </summary>
-        /// <param name="poolId"></param>
-        /// <param name="cancellationToken"></param>
+        /// <param name="poolId">Pool id</param>
+        /// <param name="cancellationToken">Cancellation token</param>
         public async Task DeleteBatchPoolAsync(string poolId, CancellationToken cancellationToken = default)
         {
             ArgumentException.ThrowIfNullOrEmpty(poolId);
