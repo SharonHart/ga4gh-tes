@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
 using Tes.Models;
@@ -125,14 +126,21 @@ namespace TesApi.Controllers
 
             foreach (var input in tesTask.Inputs ?? Enumerable.Empty<TesInput>())
             {
+                input.Url = input.Url.Replace("az://", $"/tes326104151331cd/");
                 if (!input.Path.StartsWith('/'))
                 {
                     return BadRequest("Input paths in the container must be absolute paths.");
                 }
             }
 
+            var command = tesTask.Executors[0].Command;
+            command.Remove(command[1]);
+            command[0] += " -c";
+            tesTask.Executors[0].Command = command;
+
             foreach (var output in tesTask.Outputs ?? Enumerable.Empty<TesOutput>())
             {
+                output.Url = output.Url.Replace("az://", $"/tes326104151331cd/");
                 if (!output.Path.StartsWith('/'))
                 {
                     return BadRequest("Output paths in the container must be absolute paths.");
